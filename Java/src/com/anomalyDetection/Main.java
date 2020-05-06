@@ -11,6 +11,6 @@ public class Main {
         Reader reader = new Reader(pathToCsv);
         //reader.readSomeLines();
         List<Line> readLines = reader.readLinesToObjects();
-        System.out.println(readLines.get(0).dateTime);
+        System.out.println(readLines.get(450000).getDateTime());
     }
 }

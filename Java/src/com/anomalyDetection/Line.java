@@ -2,7 +2,7 @@ package com.anomalyDetection;
 
 public class Line {
 
-    public String dateTime; //TODO: change to date
+    private String dateTime; //TODO: change to date
     private int utcTimestamp;
     private int hour;
     private int month;
@@ -27,6 +27,103 @@ public class Line {
     private float deerAccidentProb; //probability of deer accident
     private float pmix; //gaussian mixture probability of deer accident
 
+    public float getPmix() {
+        return pmix;
+    }
+
+    public float getDeerAccidentProb() {
+        return deerAccidentProb;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getDayDate() {
+        return dayDate;
+    }
+
+    public int getLc() {
+        return lc;
+    }
+
+    public String getEventType() {
+        return eventType;
+    }
+
+    public float getStddevAvgVs() {
+        return stddevAvgVs;
+    }
+
+    public int getVehicleCount() {
+        return vehicleCount;
+    }
+
+    public float getAvgVs() {
+        return avgVs;
+    }
+
+    public int getClcCode() {
+        return clcCode;
+    }
+
+    public int getRoadType() {
+        return roadType;
+    }
+
+    public int getNumSensors() {
+        return numSensors;
+    }
+
+    public int getLclDirection() {
+        return lclDirection;
+    }
+
+    public int getLaneQuantity() {
+        return laneQuantity;
+    }
+
+    public String getRoadName() {
+        return roadName;
+    }
+
+    public int getOsmId() {
+        return osmId;
+    }
+
+    public String getGeom() {
+        return geom;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public int getDayOfWeek() {
+        return dayOfWeek;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public int getUtcTimestamp() {
+        return utcTimestamp;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+/*
+    //not used right now
     public Line (String dateTime, int utcTimestamp, int hour, int month, int day, int dayOfWeek, int season, String geom, int osmId, String roadName, int laneQuantity, int lclDirection, int numSensors, int roadType, int clcCode, float avgVs, int vehicleCount, float stddevAvgVs, String eventType, int lc, String dayDate, int year, float deerAccidentProb, float pmix) {
         this.dateTime = dateTime;
         this.utcTimestamp = utcTimestamp;
@@ -53,6 +150,7 @@ public class Line {
         this.deerAccidentProb = deerAccidentProb;
         this.pmix = pmix;
     }
+     */
 
     public Line(String line) {
         String[] lineParts = line.split(",");
