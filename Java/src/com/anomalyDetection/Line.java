@@ -18,7 +18,7 @@ public class Line {
     private int roadType; //1-3; is the type of road, in case of 1 is an Autobahn (A), 2 a Bundesstraße (B) and 3 Landstraße (L)
     private int clcCode; //can be ignored, it is the land use code from corine system
     private float avgVs; //average speed per hour
-    private int vehicleCount; //number of vehicles per segement per hour, this column has some NA values, because the accidents happened where there is no sensor on the roads.
+    private int vehicleCount; //number of vehicles per segment per hour, this column has some NA values, because the accidents happened where there is no sensor on the roads.
     private float stddevAvgVs; //Standard deviation of the speed within 1 hours of measurements in the sensors.
     private String eventType; //type of wild animals accident, only deer accidents
     private int lc; //1-4; light conditions, ###!!! It should be 1=Sunrise,2=Daylight,3=Sunset,4=Night
