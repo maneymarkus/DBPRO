@@ -1,12 +1,31 @@
 package com.anomalyDetection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Sorter {
 		
-	public static ArrayList<Segment> segments= new ArrayList<Segment>();
-	
-	
+	private static ArrayList<Segment> segments= new ArrayList<Segment>();
+
+	public static List<Segment> getSegments() {
+		return segments;
+	}
+
+	public static void sortLines(List<Line> lines) {
+		lines.stream().forEach(l -> {
+			int lineId = l.getOsmId();
+			if (!segments.stream().anyMatch(s -> s.getId() == lineId)) {
+				segments.add(new Segment(lineId));
+			}
+			segments.stream().forEach(s -> {
+				if (s.getId() == lineId) {
+					s.addData(l);
+				}
+			});
+		});
+	}
+
+	/* Didn't know how this was going to work
 	public static void addSegment(Segment s) {
 		if(segments.stream().filter(t->t.getId()==s.getId()).count()<1) {
 			segments.add(s);	
@@ -17,6 +36,5 @@ public class Sorter {
 			}
 		}			
 	}
-	
-	
+	 */
 }
