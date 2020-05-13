@@ -1,5 +1,7 @@
 package com.anomalyDetection;
 
+import java.util.Arrays;
+
 public class Line {
 
     private String dateTime; //TODO: change to date
@@ -153,7 +155,12 @@ public class Line {
      */
 
     public Line(String line) {
-        String[] lineParts = line.split(",");
+        String[] lineParts;
+        if (line.indexOf(",") >= 0) {
+            lineParts = line.split(",");
+        } else {
+            lineParts = line.split(";");
+        }
         this.dateTime = lineParts[0];
         this.utcTimestamp = Integer.parseInt(lineParts[1]);
         this.hour = Integer.parseInt(lineParts[2]);
