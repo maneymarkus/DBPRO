@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        String csvName = "a5_ohne_Duplikate.csv";
+        String csvName = "a5_ohne_Duplikate_final.csv";
         String currentWorkingDir = System.getProperty("user.dir");
         String pathToCsv = currentWorkingDir + "/../Data/" + csvName;
         //String pathToCsv = currentWorkingDir + "/Data/" + csvName;
