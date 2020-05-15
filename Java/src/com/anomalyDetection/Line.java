@@ -161,6 +161,9 @@ public class Line {
         } else {
             lineParts = line.split(";");
         }
+        if (lineParts.length <= 1) {
+            return;
+        }
         this.dateTime = lineParts[0];
         this.utcTimestamp = Integer.parseInt(lineParts[1]);
         this.hour = Integer.parseInt(lineParts[2]);
