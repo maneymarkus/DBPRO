@@ -24,7 +24,8 @@ public class Sorter {
 			});
 		});
 	}
-
+	
+	
 	/* Didn't know how this was going to work
 	public static void addSegment(Segment s) {
 		if(segments.stream().filter(t->t.getId()==s.getId()).count()<1) {
