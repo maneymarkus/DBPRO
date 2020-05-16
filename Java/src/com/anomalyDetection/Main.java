@@ -8,7 +8,8 @@ public class Main {
     public static void main(String[] args) {
         String csvName = "a5_ohne_Duplikate_final.csv";
         String currentWorkingDir = System.getProperty("user.dir");
-        String pathToCsv = currentWorkingDir + "/Data/" + csvName;
+        //String pathToCsv ="C:/users/rkrys/Downloads/a5.csv/a5.csv"; 
+        String pathToCsv =currentWorkingDir + "/Data/" + csvName;
         //String pathToCsv = currentWorkingDir + "/Data/" + csvName;
         System.out.println(pathToCsv);
         Reader reader = new Reader(pathToCsv);
@@ -23,13 +24,15 @@ public class Main {
             System.out.println(s.getId() + ": " + s.getData().size());
         });
         
-        so.forEach(Segment::sortByDay);
-        so.forEach(Segment::evaluateSegmentbyDay);
+        so.forEach(Segment::sortByHour);
+        so.forEach(Segment::evaluateSegmentbyHour);
         
         
-        so.stream().forEach(s-> {
+        so.forEach(s-> {
         	for(int i=0; i<730; i++) {
-        		System.out.println("Day:"+i +"     "+s.getFavoriteDistance(i));
+        		for(int h=0; h<24;h++) {
+        			if(s.getFavorite(i, h)!=null)System.out.println("Day:"+i + "  Hour:"+h +"     "+s.getFavoriteDistance(i,h) +"     "+ s.getFavorite(i, h).getAvgVs());
+        		}
         	}
         });
        
