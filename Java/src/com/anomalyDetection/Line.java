@@ -1,10 +1,13 @@
 package com.anomalyDetection;
 
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Line {
 
-    private String dateTime; //TODO: change to date
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    private String dateTime;
     private int utcTimestamp;
     private int hour;
     private int month;
@@ -25,6 +28,7 @@ public class Line {
     private String eventType; //type of wild animals accident, only deer accidents
     private int lc; //1-4; light conditions, ###!!! It should be 1=Sunrise,2=Daylight,3=Sunset,4=Night
     private String dayDate; //date without hour
+    private Date date;
     private int year; //2017 || 2018
     private float deerAccidentProb; //probability of deer accident
     private float pmix; //gaussian mixture probability of deer accident
@@ -43,6 +47,10 @@ public class Line {
 
     public String getDayDate() {
         return dayDate;
+    }
+
+    public Date getDate() {
+        return date;
     }
 
     public int getLc() {
@@ -197,6 +205,12 @@ public class Line {
         this.eventType = lineParts[18];
         this.lc = Integer.parseInt(lineParts[19]);
         this.dayDate = lineParts[20];
+        // parse dayDate to usable Date Object
+        try {
+            this.date = dateFormat.parse(dayDate);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         this.year = Integer.parseInt(lineParts[21]);
         this.deerAccidentProb = Float.parseFloat(lineParts[22]);
         this.pmix = Float.parseFloat(lineParts[23]);

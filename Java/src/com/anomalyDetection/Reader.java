@@ -2,19 +2,19 @@ package com.anomalyDetection;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Reader {
 
     private String dataPath;
     private Stream<String> dataStream;
+    private Data data;
 
-    public Reader (String dataPath) {
+    public Reader (String dataPath, Data data) {
         this.dataPath = dataPath;
         try {
             this.dataStream = Files.lines(Paths.get(dataPath));
+            this.data = data;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,16 +24,15 @@ public class Reader {
         dataStream.limit(5).forEach(System.out::println);
     }
 
-    public List<Line> readLinesToObjects() {
-        List<Line> readLines = dataStream
+    public void readLinesToObjects() {
+        dataStream
             .skip(1) //skip first line
-            .map(
+            .forEach(
                 line -> {
                     Line l = new Line(line);
-                    return l;
+                    this.data.addLine(l);
                 }
-            ).collect(Collectors.toList());
-        return readLines;
+            );
     }
 
 }
