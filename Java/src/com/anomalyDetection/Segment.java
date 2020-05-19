@@ -3,6 +3,7 @@ package com.anomalyDetection;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Segment {
 	private int id;
 	private List<Line> data;
@@ -25,6 +26,7 @@ public Segment(int id) {
 
 
 //sort by Hour and Day
+@Deprecated
 public void sortByHour() {
 	
 	for(Line l:data) {
@@ -46,6 +48,7 @@ public void sortByHour() {
 }
 
 //evaluate
+@Deprecated
 public void evaluateSegmentbyHour() {
 	for(int d=0; d<730; d++) {  //für jeden tag
 		if(this.daylieData[d]!=null) {

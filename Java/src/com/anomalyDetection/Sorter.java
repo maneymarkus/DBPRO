@@ -3,6 +3,7 @@ package com.anomalyDetection;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class Sorter {
 		
 	private static ArrayList<Segment> segments= new ArrayList<Segment>();

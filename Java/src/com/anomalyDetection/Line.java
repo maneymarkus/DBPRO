@@ -132,35 +132,6 @@ public class Line {
     public String getDateTime() {
         return dateTime;
     }
-/*
-    //not used right now
-    public Line (String dateTime, int utcTimestamp, int hour, int month, int day, int dayOfWeek, int season, String geom, int osmId, String roadName, int laneQuantity, int lclDirection, int numSensors, int roadType, int clcCode, float avgVs, int vehicleCount, float stddevAvgVs, String eventType, int lc, String dayDate, int year, float deerAccidentProb, float pmix) {
-        this.dateTime = dateTime;
-        this.utcTimestamp = utcTimestamp;
-        this.hour = hour;
-        this.month = month;
-        this.day = day;
-        this.dayOfWeek = dayOfWeek;
-        this.season = season;
-        this.geom = geom;
-        this.osmId = osmId;
-        this.roadName = roadName;
-        this.laneQuantity = laneQuantity;
-        this.lclDirection = lclDirection;
-        this.numSensors = numSensors;
-        this.roadType = roadType;
-        this.clcCode = clcCode;
-        this.avgVs = avgVs;
-        this.vehicleCount = vehicleCount;
-        this.stddevAvgVs = stddevAvgVs;
-        this.eventType = eventType;
-        this.lc = lc;
-        this.dayDate = dayDate;
-        this.year = year;
-        this.deerAccidentProb = deerAccidentProb;
-        this.pmix = pmix;
-    }
-     */
 
     public Line(String line) {
         String[] lineParts;

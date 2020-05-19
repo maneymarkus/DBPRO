@@ -5,10 +5,10 @@ import java.util.*;
 
 public class Week {
 
-    private Date dayDateStart;
-    private Date dayDateEnd;
-    private int calendarWeek;
-    private int season;
+    private final Date dayDateStart;
+    private final Date dayDateEnd;
+    private final int calendarWeek;
+    private final int season;
     //0 = Monday, 1 = Tuesday,  ...
     // INFO: Be aware of Nullpointers! Data may not be consistent, especially when comparing real time data within one week
     private Day[] days = new Day[7];

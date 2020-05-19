@@ -53,6 +53,7 @@ public class Day {
         return hours;
     }
 
+    // returns the wanted hour of this day based on the given index
     public Line getHour(int h) {
         if (h >= 0 && h <= 23) {
             if (hours[h] != null) {
