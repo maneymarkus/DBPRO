@@ -6,7 +6,7 @@ import java.util.Date;
 public class GeoData {
 
     //geographical segment based on osm_id
-    private int geoId;
+    private final int geoId;
     private ArrayList<Day> days = new ArrayList<>();
     private ArrayList<Week> weeks = new ArrayList<>();
 

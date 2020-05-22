@@ -69,4 +69,16 @@ public class Week {
         return days;
     }
 
+    public boolean hasAccident() {
+        boolean accident = false;
+        for (Day d : days) {
+            if (d != null) {
+                if (d.hasAccident()) {
+                    accident = true;
+                }
+            }
+        }
+        return accident;
+    }
+
 }

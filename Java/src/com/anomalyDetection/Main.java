@@ -19,12 +19,17 @@ public class Main {
         //reader.readSomeLines();
         reader.readLinesToObjects();
 
-//        data.getSegments().get(0).getWeeks().stream().forEach(w -> {
-//            if (w.getDayOfWeek(0) != null) {
-//                System.out.println(w.getDayOfWeek(0).getHour(0).getAvgVs());
-//            }
-//        });
-        List<Day> mondays=data.getSegments().get(0).getWeeks().stream().filter( s->s.getDayOfWeek(0)!=null).map(s->s.getDayOfWeek(0)).collect(Collectors.toList());
+        data.getSegments().forEach(s -> {
+           s.getWeeks().stream().forEach(w -> {
+                if (w.hasAccident()) {
+                    System.out.println("Accident!");
+                }
+            });
+        });
+
+        System.exit(1);
+
+        List<Day> mondays=data.getSegments().get(0).getWeeks().stream().filter(s->s.getDayOfWeek(0)!=null).map(s->s.getDayOfWeek(0)).collect(Collectors.toList());
        int i=0;
         //for(Day a:mondays) {
        Day a= mondays.get(1);
@@ -41,6 +46,5 @@ public class Main {
         System.out.println(mondays.size());
         System.out.println(sum);
         System.out.println(sumDTW);
-        
     }
 }

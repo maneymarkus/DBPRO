@@ -29,9 +29,9 @@ public class Day {
     	float[][] costMatrix= new float[24][24];
     	if(b!=null) {
     		for(int i=0; i<24;i++) { //i = counter for day a's hours
-//    			float last= (float) 0.00;
+                //float last= (float) 0.00;
     			for(int j=0; j<24;j++) { // counter for day B's hours
-//    				costMatrix[i][j]=Math.abs(this.hours[i].getAvgVs()-b.getHour(j).getAvgVs())+last;
+                    //costMatrix[i][j]=Math.abs(this.hours[i].getAvgVs()-b.getHour(j).getAvgVs())+last;
     				
     				//all neighbours left and down are null
     				if(i-1<0&&j-1<0) {
@@ -43,14 +43,12 @@ public class Day {
     				}else if(i-1>=0&&j-1<0) { //only bottom neighbour
     					costMatrix[i][j]=costMatrix[i-1][j]+Math.abs(this.hours[i].getAvgVs()-b.getHour(j).getAvgVs());
     					
-    				}else if(i-1>=0&&j-1>=0) { //left bottom and bottom-left neighbour 
+    				}else if(i-1>=0&&j-1>=0) { //left, bottom and bottom-left neighbour
     					
     				 //System.out.println(Math.min(Math.min(costMatrix[i-1][j], costMatrix[i][j-1]), costMatrix[i-1][j-1])+Math.abs(this.hours[i].getAvgVs()-b.getHour(j).getAvgVs()));
     					costMatrix[i][j]=Math.min(Math.min(costMatrix[i-1][j], costMatrix[i][j-1]), costMatrix[i-1][j-1])+Math.abs(this.hours[i].getAvgVs()-b.getHour(j).getAvgVs());
     				}
-    				
-    				
-    				
+
     				// i, j-1 : left
     				// i-1, j : bottom
     				// i-1, j-1	 : bottom-left
@@ -60,9 +58,7 @@ public class Day {
     	}
     	return costMatrix;
     }
-    
-    
-    
+
     //euklidean distance  no use of costMatrix required
     public float getTotalEuklideanDistanceToDay(Day b) {
     	float dist= (float) 0.00;
@@ -74,9 +70,7 @@ public class Day {
     }
     
     //DTW-Distance
-    
     public float getDTWDistance(float[][] costMatrix) {
-
     	return costMatrix[23][23];
     }
     
@@ -133,6 +127,18 @@ public class Day {
     //not a normal setter
     public void setHours(List<Line> lines) {
         lines.forEach(l -> setHour(l));
+    }
+
+    public boolean hasAccident() {
+        boolean accident = false;
+        for (Line h : hours) {
+            if (h != null) {
+                if (!h.getEventType().equals("")) {
+                    accident = true;
+                }
+            }
+        }
+        return accident;
     }
 
 
