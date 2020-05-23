@@ -11,10 +11,8 @@ public class Main {
         //String csvName = "a5_Selektion_9000_Daten.csv";
         String csvName = "a5_ohne_Duplikate_final.csv";
         String currentWorkingDir = System.getProperty("user.dir");
-        String pathToCsv ="C:/users/rkrys/Downloads/a5.csv/a5.csv"; 
-        //String pathToCsv = currentWorkingDir + "/Data/" + csvName;
-        //String pathToCsv = currentWorkingDir + "/../Data/" + csvName;
-        //System.out.println(pathToCsv);
+        //String pathToCsv ="C:/users/rkrys/Downloads/a5.csv/a5.csv";
+        String pathToCsv = currentWorkingDir + "/../Data/" + csvName;
         Data data = new Data();
         Reader reader = new Reader(pathToCsv, data);
 
@@ -28,17 +26,17 @@ public class Main {
         //List<Day> allDays=
         	
 		//ERMITTEL DEN GOLDEN BATCH
-       float bestDistance=(float) 0.00; 
-       Day bestData=null;//mondays.get(1);//  GOLDENBATCH
-       int i=0;
-       float totalDistance=(float) 0.00;//for AVGdist
-       //Day a= mondays.get(1);
-       float sum= (float) 0.00;
-       float sumDTW= (float) 0.00;
-       for(Day a:mondays) {
-    	   sum=(float) 0.00;
-    	   sumDTW=(float) 0.00;
-        	for(Day b:mondays) {
+       	float bestDistance=(float) 0.00;
+       	Day bestData=null;//mondays.get(1);//  GOLDENBATCH
+       	int i=0;
+       	float totalDistance=(float) 0.00;//for AVGdist
+       	//Day a= mondays.get(1);
+       	float sum= (float) 0.00;
+		float sumDTW= (float) 0.00;
+       	for(Day a:mondays) {
+    	   	sum=(float) 0.00;
+    	   	sumDTW=(float) 0.00;
+			for(Day b:mondays) {
         		//System.out.println(a.getDTWDistance(a.createCostMatrix(b))+" "+ a.getTotalEuklideanDistanceToDay(b));
         		sum+=a.getTotalEuklideanDistanceToDay(b);
         		sumDTW+=Day.getDTWDistance(a.createCostMatrix(b),23,23);
@@ -67,26 +65,25 @@ public class Main {
 //        		 Line[] hours=a.getHours();
 //        	       for(int k=0;k<24;k++) {
 //        	    	   System.out.println(k + "     " +hours[k].getAvgVs() +" km/h" + hours[k].getEventType());
-        	       } 
+	   	}
         	       
-        	 totalDistance+=sumDTW;
-        	i++;
+		totalDistance+=sumDTW;
 
-			// check all DTW distances to golden batch
-        	float allMondaysToGoldenBatchTotal=(float)0.00;
-        	for(Day x:mondays) {
-        		allMondaysToGoldenBatchTotal+=Day.getDTWDistance(bestData.createCostMatrix(x),23,23);
-        	}
+		// check all DTW distances to golden batch
+		float allMondaysToGoldenBatchTotal=(float)0.00;
+		for(Day x:mondays) {
+			allMondaysToGoldenBatchTotal+=Day.getDTWDistance(bestData.createCostMatrix(x),23,23);
+		}
         	
-        	float allMondaysToGoldenBatchAVG=allMondaysToGoldenBatchTotal/mondays.size();
+		float allMondaysToGoldenBatchAVG=allMondaysToGoldenBatchTotal/mondays.size();
         	
-			//Look for Anomalies with higher distances than average
-        	List<Day> anomalies=new ArrayList<Day>();
-        	for(Day y:mondays) {
-        		if(Day.getDTWDistance(bestData.createCostMatrix(y),23,23)>allMondaysToGoldenBatchAVG) {
-        			anomalies.add(y);
-        		}
-        	}
+		//Look for Anomalies with higher distances than average
+		List<Day> anomalies=new ArrayList<Day>();
+		for(Day y:mondays) {
+			if(Day.getDTWDistance(bestData.createCostMatrix(y),23,23)>(allMondaysToGoldenBatchAVG * 2)) {
+				anomalies.add(y);
+			}
+		}
     
     
        
@@ -101,16 +98,13 @@ public class Main {
         	
 		System.out.println("_________________");
 		System.out.println("AVG Distance to GoldenBatch: "+ allMondaysToGoldenBatchAVG);
-		System.out.println("i: "+i);
         System.out.println(mondays.size());
         System.out.println(sum);
         System.out.println(sumDTW);
-       // System.out.println(sum);
-       // System.out.println(sumDTW);
         System.out.println("________Anomalies_________");
         
         anomalies.stream().map(a->a.getDate()).forEach(System.out::println);
-       // System.out.println("avg totaldistance:  "+totalDistance/i);
+		//System.out.println("avg totaldistance:  "+totalDistance/i);
         //System.out.println(sumDTW);
     }
     
