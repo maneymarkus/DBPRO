@@ -1,7 +1,9 @@
 package com.anomalyDetection;
 
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +21,17 @@ public class Main {
         //reader.readSomeLines();
         reader.readLinesToObjects();
 
-        List<Day> mondays = data.getSegments().get(0).getWeeks().stream().filter(s->s.getDayOfWeek(0)!=null).map(s->s.getDayOfWeek(0)).collect(Collectors.toList());
-        
-        //List<Day> wildUnfaelle =new ArrayList<Day>();
-        	
-        //List<Day> allDays=
+        System.out.println(data.getSegments().get(0).getGeoId());
+
+        List<Day> mondays = data.getSegments().get(0).getWeeks().stream().filter(s->s.getDayOfWeek(6)!=null).map(s->s.getDayOfWeek(6)).collect(Collectors.toList());
+
+        for(Day a: mondays) {
+        	System.out.println(a.getDayDate());
+		}
+
+        System.exit(1);
+
+        //List<Week> accidents = data.getSegments().forEach(s -> s.getWeeks().stream().filter(w -> w.hasAccident()));
         	
 		//ERMITTEL DEN GOLDEN BATCH
        	float bestDistance=(float) 0.00;
