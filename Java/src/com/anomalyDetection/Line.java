@@ -187,4 +187,57 @@ public class Line {
         this.pmix = Float.parseFloat(lineParts[23]);
     }
 
+    public Line(Line a, Line b) {
+        //TODO: DateTime and TimeStamp
+        this.dateTime = "";
+        this.utcTimestamp = 0;
+        this.hour = (a.getHour() + b.getHour()) / 2;
+        this.month = a.getMonth();
+        this.day = a.getDay();
+        this.dayOfWeek = a.getDayOfWeek();
+        this.season = a.getSeason();
+        this.geom = a.getGeom();
+        this.osmId = a.getOsmId();
+        this.roadName = a.getRoadName();
+        this.laneQuantity = a.getLaneQuantity();
+        this.lclDirection = a.getLclDirection();
+        this.numSensors = a.getNumSensors();
+        this.roadType = a.getRoadType();
+        this.clcCode = a.getClcCode();
+        if (a.getAvgVs() == 0) {
+            this.avgVs = b.getAvgVs();
+        } else if (b.getAvgVs() == 0) {
+            this.avgVs = a.getAvgVs();
+        } else {
+            this.avgVs = (a.getAvgVs() + b.getAvgVs()) / 2;
+        }
+        if (a.getVehicleCount() == 0) {
+            this.vehicleCount = b.getVehicleCount();
+        } else if (b.getVehicleCount() == 0) {
+            this.vehicleCount = a.getVehicleCount();
+        } else {
+            this.vehicleCount = (a.getVehicleCount() + b.getVehicleCount()) / 2;
+        }
+        if (a.getStddevAvgVs() == 0) {
+            this.stddevAvgVs = b.getStddevAvgVs();
+        } else if (b.getStddevAvgVs() == 0) {
+            this.stddevAvgVs = a.getStddevAvgVs();
+        } else {
+            this.stddevAvgVs = (a.getStddevAvgVs() + b.getStddevAvgVs()) / 2;
+        }
+        this.eventType = "";
+        this.lc = a.getLc();
+        this.dayDate = a.getDayDate();
+        this.date = a.getDate();
+        this.year = a.getYear();
+        this.deerAccidentProb = (a.getDeerAccidentProb() + b.getDeerAccidentProb()) / 2;
+        this.pmix = (a.getPmix() + b.getPmix()) / 2;
+    }
+
+    public String toCsvString() {
+        String line = "";
+        line += this.dateTime + "," + this.utcTimestamp + "," + this.hour + "," + this.month + "," + this.day + "," + this.dayOfWeek + "," + this.season + "," + this.geom + "," + this.osmId + "," + this.roadName + "," + this.laneQuantity + "," + this.lclDirection + "," + this.numSensors + "," + this.roadType + "," + this.clcCode + "," + this.avgVs + "," + this.vehicleCount + "," + this.stddevAvgVs + "," + this.eventType + "," + this.lc + "," + this.dayDate + "," + this.year + "," + this.deerAccidentProb + "," + this.pmix;
+        return line;
+    }
+
 }

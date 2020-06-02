@@ -2,6 +2,7 @@ package com.anomalyDetection;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class GeoData {
 
@@ -9,6 +10,7 @@ public class GeoData {
     private final int geoId;
     private ArrayList<Day> days = new ArrayList<>();
     private ArrayList<Week> weeks = new ArrayList<>();
+    private GoldenBatch goldenBatch;
 
     public GeoData(Line dataset) {
         this.geoId = dataset.getOsmId();
@@ -32,7 +34,7 @@ public class GeoData {
                 this.weeks.stream().filter(w -> w.getDayDateStart().compareTo(date) <= 0 && w.getDayDateEnd().compareTo(date) >= 0).limit(1).forEach(w -> w.setDay(newDay));
             } else {
                 //If not, then create a new week and add the new day with the given hour
-                this.weeks.add(new Week(newDay));
+                this.weeks.add(new Week(newDay, this.geoId));
             }
         }
     }
@@ -47,6 +49,34 @@ public class GeoData {
 
     public ArrayList<Week> getWeeks() {
         return this.weeks;
+    }
+
+    public GoldenBatch getGoldenBatch() {
+        return this.goldenBatch;
+    }
+
+    public void setGoldenBatch(GoldenBatch gB) {
+        this.goldenBatch = gB;
+    }
+
+    public void findGoldenBatch() {
+        this.goldenBatch = GoldenBatch.findOptimalWeek(this.weeks);
+    }
+
+    public List<Day> findAnomalies() {
+        return this.goldenBatch.determineAnomalies(this.weeks);
+    }
+
+    public String toCsvString() {
+        String weeksString = "";
+        for (Week w : this.weeks) {
+            if(w != null) {
+                weeksString += w.toCsvString();
+            } else {
+                weeksString += "\n";
+            }
+        }
+        return weeksString;
     }
 
 

@@ -33,6 +33,7 @@ public class Reader {
                     this.data.addLine(l);
                 }
             );
+
     }
 
 }

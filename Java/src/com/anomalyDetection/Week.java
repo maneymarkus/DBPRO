@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Week {
 
+    private final int geoId;
     private final Date dayDateStart;
     private final Date dayDateEnd;
     private final int calendarWeek;
@@ -13,7 +14,7 @@ public class Week {
     // INFO: Be aware of Nullpointers! Data may not be consistent, especially when comparing real time data within one week
     private Day[] days = new Day[7];
 
-    public Week(Day day) {
+    public Week(Day day, int geoId) {
         Date date = day.getDate();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -26,6 +27,7 @@ public class Week {
         this.dayDateEnd = calendar.getTime();
         this.calendarWeek = calendar.WEEK_OF_YEAR;
         this.season = day.getSeason();
+        this.geoId = geoId;
         this.setDay(day);
     }
 
@@ -45,7 +47,7 @@ public class Week {
                 return null;
             }
         } else {
-            return null;
+            throw new IndexOutOfBoundsException();
         }
     }
 
@@ -69,6 +71,10 @@ public class Week {
         return days;
     }
 
+    public int getGeoId() {
+        return geoId;
+    }
+
     public boolean hasAccident() {
         boolean accident = false;
         for (Day d : days) {
@@ -81,4 +87,15 @@ public class Week {
         return accident;
     }
 
+    public String toCsvString() {
+        String weekString = "";
+        for (Day d : days) {
+            if (d != null) {
+                weekString += d.toCsvString();
+            } else {
+                weekString += "\n";
+            }
+        }
+        return weekString;
+    }
 }
