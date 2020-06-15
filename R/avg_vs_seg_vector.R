@@ -1,6 +1,6 @@
 # Run with:
 # ---------
-#  > source('~/.../avg_vs_seg.R') 
+#  > source('~/.../avg_vs_seg_vector.R') 
 #  
 #  > avg_vs_seg('~/.../a5.csv','~/.../alternative.csv','~/.../vektor.txt' '1711296', 'mixing')
 
