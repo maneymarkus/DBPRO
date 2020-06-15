@@ -18,6 +18,9 @@ public class Main {
         //reader.readSomeLines();
         reader.readLinesToObjects();
 
+        System.out.println(data.getSegments().size());
+        System.exit(0);
+
         GeoData firstSegment = data.getSegments().get(0);
 
         firstSegment.findGoldenBatch();

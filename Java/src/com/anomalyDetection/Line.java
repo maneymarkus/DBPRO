@@ -10,6 +10,7 @@ public class Line {
     private String dateTime;
     private int utcTimestamp;
     private int hour;
+    private int weekHour;
     private int month;
     private int day;
     private int dayOfWeek; //0-6; 0 = Sunday
@@ -125,6 +126,10 @@ public class Line {
         return hour;
     }
 
+    public int getWeekHour() {
+        return weekHour;
+    }
+
     public int getUtcTimestamp() {
         return utcTimestamp;
     }
@@ -148,7 +153,9 @@ public class Line {
         this.hour = Integer.parseInt(lineParts[2]);
         this.month = Integer.parseInt(lineParts[3]);
         this.day = Integer.parseInt(lineParts[4]);
-        this.dayOfWeek = Integer.parseInt(lineParts[5]);
+        // map day of week newly, since our day of week starts with Monday and given day of week starts with Sunday
+        this.dayOfWeek = (Integer.parseInt(lineParts[5]) + 6) % 7;
+        this.weekHour = (this.dayOfWeek - 1) * 24 + this.hour;
         this.season = Integer.parseInt(lineParts[6]);
         this.geom = lineParts[7];
         this.osmId = Integer.parseInt(lineParts[8]);
@@ -195,6 +202,7 @@ public class Line {
         this.month = a.getMonth();
         this.day = a.getDay();
         this.dayOfWeek = a.getDayOfWeek();
+        this.weekHour = (a.getWeekHour() + b.getWeekHour()) / 2;
         this.season = a.getSeason();
         this.geom = a.getGeom();
         this.osmId = a.getOsmId();

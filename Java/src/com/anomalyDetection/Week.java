@@ -34,8 +34,7 @@ public class Week {
     //insert new Day in this Week
     public void setDay(Day day) {
         int dayOfWeek = day.getDayOfWeek();
-        // map day of week newly, since our day of week starts with Monday and given day of week starts with Sunday
-        this.days[((dayOfWeek + 6) % 7)] = day;
+        this.days[dayOfWeek] = day;
     }
 
     //get day of week based on given index: 0 returns Monday, 1 returns Tuesday, etc.
@@ -49,6 +48,24 @@ public class Week {
         } else {
             throw new IndexOutOfBoundsException();
         }
+    }
+
+    /**
+     *  Returns an hour of the week. The index has to be between 0 and 168 (hours in one week). This method is used for realtime processing.
+     *
+     * @param   index   specifies the wanted hour
+     * @return          the wanted hour specified by the index
+     */
+    public Line getHourOfWeek(int index) {
+        if (index < 0 || index > 167) {
+            System.out.println("The given index has to be between 0 and 167. (Since a week contains 168 hours)");
+            return null;
+        }
+        //determine the day
+        int dayIndex = index / 24;
+        //determine the hour of this day
+        int hourIndex = index % 24;
+        return this.getDayOfWeek(dayIndex).getHour(hourIndex);
     }
 
     public Date getDayDateStart() {

@@ -75,6 +75,12 @@ public class GoldenBatch {
         return distanceToGoldenBatchAvg;
     }
 
+    public void realtimeComparison(Line hour) {
+        int weekHour = hour.getWeekHour();
+        Line goldenHour = this.goldenWeek.getHourOfWeek(weekHour);
+        compareHours(hour, goldenHour, 0);
+    }
+
     /*
      * STATIC ANALYSE FUNCTIONS
      */
@@ -135,6 +141,14 @@ public class GoldenBatch {
         return bestData;
     }
 
+    /**
+     * This function compares a list of days to a GoldenBatch day and returns a list of days identified as Anomalies
+     *
+     * @param goldenBatchDay    the optimal day
+     * @param days              the days to compare to the optimal day
+     * @param threshold         the defined threshold to determine abnormal days
+     * @return                  all the identified anomalies
+     */
     public static List<Day> determineAnomaliesDay(Day goldenBatchDay, List<Day> days, float threshold) {
         List<Day> anomalies = new ArrayList<Day>();
         for (Day x : days) {
@@ -146,6 +160,14 @@ public class GoldenBatch {
             }
         }
         return anomalies;
+    }
+
+    public static boolean compareHours(Line hourA, Line hourB, float deviation) {
+        boolean isAnomaly = false;
+        if (Math.abs(hourA.getAvgVs() - hourB.getAvgVs()) > deviation) {
+            isAnomaly = true;
+        }
+        return isAnomaly;
     }
 
 }
