@@ -74,6 +74,41 @@ public class GoldenBatch {
         float distanceToGoldenBatchAvg = distanceToGoldenBatch / days.size();
         return distanceToGoldenBatchAvg;
     }
+    
+    //determine threshold per hour
+    public float determineThresholdpH(List<Day> days, int dayOfWeek,int h) {
+        float distanceToGoldenBatch = (float)0.00;
+        for (Day x : days) {
+            if (x == null) {
+                continue;
+            }
+            distanceToGoldenBatch += DistanceUtility.getDTWDistance(DistanceUtility.createCostMatrix(this.goldenWeek.getDayOfWeek(dayOfWeek), x),h,h);
+        }
+        float distanceToGoldenBatchAvg = distanceToGoldenBatch / days.size();
+        return distanceToGoldenBatchAvg;
+    }
+    
+    public float findMaxDistance(List<Day> days, int dayOfWeek, int h) {
+        float distanceToGoldenBatch = (float)0.00;
+        for (Day x : days) {
+            if (x == null) {
+                continue;
+            }
+            if (distanceToGoldenBatch<=DistanceUtility.getDTWDistance(DistanceUtility.createCostMatrix(this.goldenWeek.getDayOfWeek(dayOfWeek), x),h,h)){
+            	distanceToGoldenBatch=DistanceUtility.getDTWDistance(DistanceUtility.createCostMatrix(this.goldenWeek.getDayOfWeek(dayOfWeek), x),h,h);
+            }
+        }
+        float distanceToGoldenBatchAvg = distanceToGoldenBatch;/// days.size();
+        return distanceToGoldenBatchAvg;
+    }
+
+    public void realtimeComparison(Line hour) {
+        int weekHour = hour.getWeekHour();
+        Line goldenHour = this.goldenWeek.getHourOfWeek(weekHour);
+        if(compareHours(hour, goldenHour, 0)) {
+            System.out.println("Anomaly! at Segment " + hour.getOsmId() + ". Date and Time: " + hour.getDateTime());
+        }
+    }
 
     /*
      * STATIC ANALYSE FUNCTIONS
@@ -99,42 +134,57 @@ public class GoldenBatch {
         float bestDistance = (float) 0.00;
         Day bestData = null; // GOLDENBATCH
         int i = 0;
-        float totalDistance = (float) 0.00;//for AVGdist
-        float sum = (float) 0.00;
+      //  float totalDistance = (float) 0.00;//for AVGdist
+      //  float sum = (float) 0.00;
         float sumDTW = (float) 0.00;
         for(Day a : days) {
             if (a == null) {
                 continue;
             }
-            sum = (float) 0.00;
+          //  sum = (float) 0.00;
             sumDTW = (float) 0.00;
             for (Day b : days) {
                 if (b == null) {
                     continue;
                 }
-                //System.out.println(a.getDTWDistance(a.createCostMatrix(b))+" "+ a.getTotalEuklideanDistanceToDay(b));
-                sum += DistanceUtility.getTotalEuklideanDistanceToDay(a, b);
+                ////System.out.println(a.getDTWDistance(a.createCostMatrix(b))+" "+ a.getTotalEuklideanDistanceToDay(b));
+               // sum += DistanceUtility.getTotalEuklideanDistanceToDay(a, b);
                 sumDTW += DistanceUtility.getDTWDistance(DistanceUtility.createCostMatrix(a, b), 23, 23);
 
-                //if(bestDistance==(float)0.00)System.out.println("Yikes  "+sumDTW);
+               // if(bestDistance==(float)0.00)System.out.println("Yikes  "+sumDTW);
                 if (sumDTW <= bestDistance || bestDistance == (float) 0.00) {//sumDTW<=bestDistance||
                     if (bestData != null) {
-                        System.out.println(bestData.getDate() + "____" + bestDistance);
+                       // System.out.println(bestData.getDate() + "____" + bestDistance);
                         Line[] hours = bestData.getHours();
                         for (int k = 0; k < 24; k++) {
-                            System.out.println(k + "     " + hours[k].getAvgVs() + " km/h");
+                           // System.out.println(k + "     " + hours[k].getAvgVs() + " km/h");
                         }
                     }
                     bestDistance = sumDTW;
                     bestData = a;
-                    System.out.println("got something better!     " + a.getDate());
-                    System.out.println("NICE:___" + bestDistance);
+                   // System.out.println("got something better!     " + a.getDate());
+                   // System.out.println("NICE:___" + bestDistance);
                 }
             }
         }
+//        if (bestData != null) {
+//            System.out.println(bestData.getDate() + "___OPTI_" + bestDistance);
+//            Line[] hours = bestData.getHours();
+//            for (int k = 0; k < 24; k++) {
+//                System.out.println(k + "     " + hours[k].getAvgVs() + " km/h");
+//            }
+//        }
         return bestData;
     }
 
+    /**
+     * This function compares a list of days to a GoldenBatch day and returns a list of days identified as Anomalies
+     *
+     * @param goldenBatchDay    the optimal day
+     * @param days              the days to compare to the optimal day
+     * @param threshold         the defined threshold to determine abnormal days
+     * @return                  all the identified anomalies
+     */
     public static List<Day> determineAnomaliesDay(Day goldenBatchDay, List<Day> days, float threshold) {
         List<Day> anomalies = new ArrayList<Day>();
         for (Day x : days) {
@@ -146,6 +196,14 @@ public class GoldenBatch {
             }
         }
         return anomalies;
+    }
+
+    public static boolean compareHours(Line hourA, Line hourB, float deviation) {
+        boolean isAnomaly = false;
+        if (Math.abs(hourA.getAvgVs() - hourB.getAvgVs()) > deviation) {
+            isAnomaly = true;
+        }
+        return isAnomaly;
     }
 
 }
