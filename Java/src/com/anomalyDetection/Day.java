@@ -15,6 +15,10 @@ public class Day {
     private final int season;
     // INFO: Be aware of Nullpointers! Data may not be consistent, especially new Data within one Day
     private Line[] hours = new Line[24];
+    //keep track of the zero values of the read lines in the dataset
+    private int zeroValues = 0;
+    //if the day has to many zero values we can't use it anymore
+    private boolean hasTooManyZeros = false;
 
     public Day(Line l) {
         this.setHour(l);
@@ -26,7 +30,6 @@ public class Day {
         this.season = l.getSeason();
     }
 
-    //TODO: maybe smooth bigger "holes" in data
     private Line smoothDay(int hIndex) {
         for (int i = 0; i < hours.length; i++) {
             if (hours[i] == null) {
@@ -74,6 +77,10 @@ public class Day {
         return hours;
     }
 
+    public boolean getHasTooManyZeros() {
+        return this.hasTooManyZeros;
+    }
+
     // returns the wanted hour of this day based on the given index
     public Line getHour(int h) {
         if (h >= 0 && h <= 23) {
@@ -92,6 +99,12 @@ public class Day {
         int h = line.getHour();
         if (h >= 0 && h <= 23) {
             this.hours[h] = line;
+        }
+        if (line.getAvgVs() == 0) {
+            this.zeroValues++;
+        }
+        if (this.zeroValues >= 5) {
+            this.hasTooManyZeros = true;
         }
     }
 

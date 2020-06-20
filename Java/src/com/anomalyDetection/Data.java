@@ -12,6 +12,8 @@ public class Data {
 
     //geographical segments based on osm_id
     private ArrayList<GeoData> segments;
+    //variable which keeps track of the state of the application: if learning is true this means the application still collects data. If learning is false the realtime comparison can be started
+    private boolean learning = true;
 
     public Data() {
         /*
@@ -20,16 +22,24 @@ public class Data {
         this.segments = new ArrayList<>();
     }
 
-    //geographical segmentation based on osm_id
+    /**
+     * geographical segmentation based on osm_id
+     * @param line  the read line which needs to be distributed
+     */
     public void geoSplitData(Line line) {
         int geoId = line.getOsmId();
         //Check if geographical segment exists
         if (this.segments.stream().anyMatch(s -> s.getGeoId() == geoId)) {
-            this.segments.stream().filter(s -> s.getGeoId() == geoId).forEach(s -> s.addData(line));
+            this.segments.stream().filter(s -> s.getGeoId() == geoId).forEach(s -> s.addData(line, this.learning));
         } else {
             //otherwise create it
             this.segments.add(new GeoData(line));
         }
+    }
+
+    public void setGoldenBatches() {
+        this.segments.stream().forEach(GeoData::findGoldenBatch);
+        this.learning = false;
     }
 
     public ArrayList<GeoData> getSegments() {
@@ -42,17 +52,21 @@ public class Data {
      * // }
      */
 
-    //this method gets read lines (Hour-Datasets) from the Reader.java and handles them over to geoSplitData method
-    public void addLine(Line line) {
+    /**
+     * this method gets read lines (Hour-Datasets) from the Reader.java and handles them over to geoSplitData method
+     * @param line  the read line
+     */
+    public void addLine(String line) {
         /*
          * // if (!this.lines.contains(line)) {
          * //   this.lines.add(line);
          * // }
          */
-        geoSplitData(line);
+        Line l = new Line(line);
+        geoSplitData(l);
     }
 
-    public void addLines(List<Line> lines) {
+    public void addLines(List<String> lines) {
         lines.forEach(l -> this.addLine(l));
     }
 

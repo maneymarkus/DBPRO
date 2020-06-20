@@ -10,15 +10,16 @@ public class GeoData {
     private final int geoId;
     private ArrayList<Day> days = new ArrayList<>();
     private ArrayList<Week> weeks = new ArrayList<>();
+    private ArrayList<Day> anomalies = new ArrayList<>();
     private GoldenBatch goldenBatch;
 
     public GeoData(Line dataset) {
         this.geoId = dataset.getOsmId();
-        this.addData(dataset);
+        this.addData(dataset, true);
     }
 
     //insert new read line out of .csv in Object Data Structure -> line == hour -> when day of this specific hour has already been created -> add -> otherwise check if week of this hour exist -> if yes, add -> if not, create new Week and new day and add given hour
-    public void addData(Line l) {
+    public void addData(Line l, boolean learning) {
         Date date = l.getDate();
         //Does the day of the given hour exist?
         if (this.days.stream().anyMatch(d -> d.getDate().compareTo(date) == 0)) {
@@ -36,6 +37,9 @@ public class GeoData {
                 //If not, then create a new week and add the new day with the given hour
                 this.weeks.add(new Week(newDay, this.geoId));
             }
+        }
+        if (!learning && this.goldenBatch != null) {
+            this.goldenBatch.realtimeComparison(l);
         }
     }
 
@@ -63,6 +67,22 @@ public class GeoData {
         this.goldenBatch = GoldenBatch.findOptimalWeek(this.weeks);
     }
 
+    public boolean hasAccident() {
+        boolean accident = false;
+        for (Week w : weeks) {
+            if (w != null) {
+                if (w.hasAccident()) {
+                    accident = true;
+                }
+            }
+        }
+        return accident;
+    }
+
+    /**
+     *  Probably deprecated. Analyses the whole dataset of this segment and tries to find anomalies within this dataset
+     * @return  List of Days which this functions determines to be Anomalies
+     */
     public List<Day> findAnomalies() {
         return this.goldenBatch.determineAnomalies(this.weeks);
     }

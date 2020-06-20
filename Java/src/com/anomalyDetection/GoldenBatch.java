@@ -78,7 +78,9 @@ public class GoldenBatch {
     public void realtimeComparison(Line hour) {
         int weekHour = hour.getWeekHour();
         Line goldenHour = this.goldenWeek.getHourOfWeek(weekHour);
-        compareHours(hour, goldenHour, 0);
+        if(compareHours(hour, goldenHour, 0)) {
+            System.out.println("Anomaly! at Segment " + hour.getOsmId() + ". Date and Time: " + hour.getDateTime());
+        }
     }
 
     /*

@@ -28,10 +28,7 @@ public class Reader {
         dataStream
             .skip(1) //skip first line
             .forEach(
-                line -> {
-                    Line l = new Line(line);
-                    this.data.addLine(l);
-                }
+                line -> this.data.addLine(line)
             );
 
     }

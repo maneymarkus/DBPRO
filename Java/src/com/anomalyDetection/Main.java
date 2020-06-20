@@ -18,7 +18,9 @@ public class Main {
         //reader.readSomeLines();
         reader.readLinesToObjects();
 
-        System.out.println(data.getSegments().size());
+        data.getSegments().stream().forEach(s -> {
+            System.out.println(s.getGeoId() + ": " + s.hasAccident());
+        });
         System.exit(0);
 
         GeoData firstSegment = data.getSegments().get(0);
