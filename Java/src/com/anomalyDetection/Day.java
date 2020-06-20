@@ -1,7 +1,5 @@
 package com.anomalyDetection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -115,14 +113,30 @@ public class Day {
 
     public boolean hasAccident() {
         boolean accident = false;
-        for (Line h : hours) {
-            if (h != null) {
-                if (!h.getEventType().equals("")) {
+        for (int j=0;j<24;j++) {
+            if (hours[j] != null) {
+                if (!hours[j].getEventType().equals("")) {
+                	//System.out.println("FEHLER IN STUNDE: " +j);
                     accident = true;
                 }
             }
         }
         return accident;
+    }
+    
+  
+    
+    public int getHOfAccident() {
+        
+        for (int j=0;j<24;j++) {
+            if (hours[j] != null) {
+                if (!hours[j].getEventType().equals("")) {
+                	//System.out.println("FEHLER IN STUNDE: " +j);
+                    return j;
+                }
+            }
+        }return -1;
+        
     }
 
     public String toCsvString() {
