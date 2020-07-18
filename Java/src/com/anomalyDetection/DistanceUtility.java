@@ -128,6 +128,15 @@ public class DistanceUtility {
         //System.out.println(dist);
         return dist;
     }
+    
+    public static float getEuklideanDistanceToDayAtH(Day a, Day b,int h) {
+        float dist = (float) 0.00;
+            dist = Math.abs(a.getHour(h).getAvgVs() - b.getHour(h).getAvgVs());
+        
+        //System.out.println(dist);
+        return dist;
+    }
+
 
     //DTW-Distance
     public static float getDTWDistance(float[][] costMatrix) {

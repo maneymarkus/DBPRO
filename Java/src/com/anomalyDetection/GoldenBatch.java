@@ -38,6 +38,21 @@ public class GoldenBatch {
         this.goldenWeek = new GoldenWeek(week);
         this.geoId = geoId;
     }
+    
+    public void realtimeComparison(Line hour) {
+        int weekHour = hour.getWeekHour();
+        Line goldenHour = this.goldenWeek.getHourOfWeek(weekHour);
+        if(compareHours(hour, goldenHour, 0)) {
+            System.out.println("Anomaly! at Segment " + hour.getOsmId() + ". Date and Time: " + hour.getDateTime());
+        }
+    }
+    public static boolean compareHours(Line hourA, Line hourB, float deviation) {
+        boolean isAnomaly = false;
+        if (Math.abs(hourA.getAvgVs() - hourB.getAvgVs()) > deviation) {
+            isAnomaly = true;
+        }
+        return isAnomaly;
+    }
 
     public GoldenWeek getGoldenWeek() {
         return this.goldenWeek;
@@ -62,7 +77,7 @@ public class GoldenBatch {
         return anomalies;
     }
 
-    //TODO: determine threshold
+ 
     public float determineThreshold(List<Day> days, int dayOfWeek) {
         float distanceToGoldenBatch = (float)0.00;
         for (Day x : days) {
@@ -87,6 +102,19 @@ public class GoldenBatch {
         float distanceToGoldenBatchAvg = distanceToGoldenBatch / days.size();
         return distanceToGoldenBatchAvg;
     }
+    //determine threshold per hour EUK
+    public float determineEUKThresholdpH(List<Day> days, int dayOfWeek,int h) {
+        float distanceToGoldenBatch = (float)0.00;
+        for (Day x : days) {
+            if (x == null) {
+                continue;
+            }
+            distanceToGoldenBatch += DistanceUtility.getEuklideanDistanceToDayAtH(this.goldenWeek.getDayOfWeek(dayOfWeek), x, h);
+            		//DistanceUtility.getDTWDistance(DistanceUtility.createCostMatrix(this.goldenWeek.getDayOfWeek(dayOfWeek), x),h,h);
+        }
+        float distanceToGoldenBatchAvg = distanceToGoldenBatch / days.size();
+        return distanceToGoldenBatchAvg;
+    }
     
     public float findMaxDistance(List<Day> days, int dayOfWeek, int h) {
         float distanceToGoldenBatch = (float)0.00;
@@ -100,14 +128,6 @@ public class GoldenBatch {
         }
         float distanceToGoldenBatchAvg = distanceToGoldenBatch;/// days.size();
         return distanceToGoldenBatchAvg;
-    }
-
-    public void realtimeComparison(Line hour) {
-        int weekHour = hour.getWeekHour();
-        Line goldenHour = this.goldenWeek.getHourOfWeek(weekHour);
-        if(compareHours(hour, goldenHour, 0)) {
-            System.out.println("Anomaly! at Segment " + hour.getOsmId() + ". Date and Time: " + hour.getDateTime());
-        }
     }
 
     /*
@@ -177,14 +197,6 @@ public class GoldenBatch {
         return bestData;
     }
 
-    /**
-     * This function compares a list of days to a GoldenBatch day and returns a list of days identified as Anomalies
-     *
-     * @param goldenBatchDay    the optimal day
-     * @param days              the days to compare to the optimal day
-     * @param threshold         the defined threshold to determine abnormal days
-     * @return                  all the identified anomalies
-     */
     public static List<Day> determineAnomaliesDay(Day goldenBatchDay, List<Day> days, float threshold) {
         List<Day> anomalies = new ArrayList<Day>();
         for (Day x : days) {
@@ -196,14 +208,6 @@ public class GoldenBatch {
             }
         }
         return anomalies;
-    }
-
-    public static boolean compareHours(Line hourA, Line hourB, float deviation) {
-        boolean isAnomaly = false;
-        if (Math.abs(hourA.getAvgVs() - hourB.getAvgVs()) > deviation) {
-            isAnomaly = true;
-        }
-        return isAnomaly;
     }
 
 }

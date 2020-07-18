@@ -1,5 +1,7 @@
 package com.anomalyDetection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -13,10 +15,6 @@ public class Day {
     private final int season;
     // INFO: Be aware of Nullpointers! Data may not be consistent, especially new Data within one Day
     private Line[] hours = new Line[24];
-    //keep track of the zero values of the read lines in the dataset
-    private int zeroValues = 0;
-    //if the day has to many zero values we can't use it anymore
-    private boolean hasTooManyZeros = false;
 
     public Day(Line l) {
         this.setHour(l);
@@ -28,6 +26,7 @@ public class Day {
         this.season = l.getSeason();
     }
 
+    //TODO: maybe smooth bigger "holes" in data
     private Line smoothDay(int hIndex) {
         for (int i = 0; i < hours.length; i++) {
             if (hours[i] == null) {
@@ -74,10 +73,8 @@ public class Day {
     public Line[] getHours() {
         return hours;
     }
+    
 
-    public boolean getHasTooManyZeros() {
-        return this.hasTooManyZeros;
-    }
 
     // returns the wanted hour of this day based on the given index
     public Line getHour(int h) {
@@ -97,12 +94,6 @@ public class Day {
         int h = line.getHour();
         if (h >= 0 && h <= 23) {
             this.hours[h] = line;
-        }
-        if (line.getAvgVs() == 0) {
-            this.zeroValues++;
-        }
-        if (this.zeroValues >= 5) {
-            this.hasTooManyZeros = true;
         }
     }
 
@@ -124,7 +115,74 @@ public class Day {
         return accident;
     }
     
-  
+    public int getVehicleCount(int h) {
+    	return this.hours[h].getVehicleCount();
+    }
+    public int getTotalVehicleCount() {
+    	int cnt = 0;
+    	for(int i=0;i<24;i++) {
+    		cnt+=this.hours[i].getVehicleCount();
+    	}
+    	return cnt;
+    }
+    
+    public int getHofMaxVehicleCount() {
+    	int h = 0;
+    	int cnt=0;
+    	for(int i=0;i<24;i++) {
+    		if(this.hours[i].getVehicleCount()>cnt) {
+    			h=i;
+    			cnt=this.hours[i].getVehicleCount();
+    		}
+    	}
+    	return h;
+    }
+    
+    public int getMaxVehicleCount() {
+    	int h = 0;
+    	int cnt=0;
+    	for(int i=0;i<24;i++) {
+    		if(this.hours[i].getVehicleCount()>cnt) {
+    			h=i;
+    			cnt=this.hours[i].getVehicleCount();
+    		}
+    	}
+    	return cnt;
+    }
+    
+    public int getMinVehicleCount() {
+    	int h = 0;
+    	int cnt=0;
+    	for(int i=0;i<24;i++) {
+    		if(cnt==0||this.hours[i].getVehicleCount()<cnt) {
+    			h=i;
+    			cnt=this.hours[i].getVehicleCount();
+    		}
+    	}
+    	return cnt;
+    }
+    public void setHofMinVehicleCount() {
+    	int h = 0;
+    	int cnt=0;
+    	for(int i=0;i<24;i++) {
+    		if(cnt==0||this.hours[i].getVehicleCount()<cnt) {
+    			h=i;
+    			cnt=this.hours[i].getVehicleCount();
+    		}
+    	}
+    	this.hours[h].setEvent("lowVehicleCount");
+    }
+    public void setHofMaxVehicleCount() {
+    	int h = 0;
+    	int cnt=0;
+    	for(int i=0;i<24;i++) {
+    		if(this.hours[i].getVehicleCount()>cnt) {
+    			h=i;
+    			cnt=this.hours[i].getVehicleCount();
+    		}
+    	}
+    	this.hours[h].setEvent("highVehicleCount");
+    }
     
     public int getHOfAccident() {
         

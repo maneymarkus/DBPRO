@@ -34,6 +34,12 @@ public class Line {
     private float deerAccidentProb; //probability of deer accident
     private float pmix; //gaussian mixture probability of deer accident
 
+    
+    public void setEvent(String s) {
+    	this.eventType=s;
+    }
+    
+    
     public float getPmix() {
         return pmix;
     }
